@@ -6,7 +6,6 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.danmaku.rndanmaku"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
