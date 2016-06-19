@@ -1,11 +1,11 @@
 /**
- * Created by buhe on 16/4/28.
+ * Created by mygu on 16/6/19.
  */
+
 var ReactNative = {
   // Components
-  Streaming: require('./Streaming'),
-  Player:require('./Player')
-}
+  Danmaku:require('./Danmaku')
+};
 
 module.exports = ReactNative;
 //

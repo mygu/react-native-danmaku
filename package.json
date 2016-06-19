@@ -1,30 +1,24 @@
 {
-  "name": "react-native-pili",
-  "version": "0.1.0",
-  "description": "Pili Streaming Cloud React Native SDK",
+  "name": "react-native-danmaku",
+  "version": "0.0.1",
+  "description": "Danmaku React Native SDK",
   "main": "index.js",
-  "scripts": {
-    "test": "npm test"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buhe/react-native-pili.git"
+    "url": "git+https://github.com/mygu/react-native-danmaku.git"
   },
   "keywords": [
     "React",
     "Native",
     "SDK",
-    "Qiniu",
-    "Pili",
-    "Stream",
-    "Cloud"
+    "Danmaku"
   ],
-  "author": "buhe",
+  "author": "mygu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buhe/react-native-pili/issues"
+    "url": "https://github.com/mygu/react-native-danmaku/issues"
   },
-  "homepage": "https://github.com/buhe/react-native-pili#readme",
+  "homepage": "https://github.com/mygu/react-native-danmaku#readme",
   "devDependencies": {
     "react": "^0.14.8",
     "react-native": "^0.24.1"
