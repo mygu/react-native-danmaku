@@ -5,7 +5,7 @@ import android.util.TypedValue;
 
 /**
  * 像素转换
- * Created by feiyang on 16/3/2.
+ * Created by mygu on 16/6/20.
  */
 public class DpOrSp2PxUtil {
     public static int dp2pxConvertInt(Context context, float dpValue) {

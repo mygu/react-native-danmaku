@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by buhe on 16/4/29.
+ * Created by mygu on 16/6/20.
  */
 public class DanmakuPackage implements ReactPackage {
 

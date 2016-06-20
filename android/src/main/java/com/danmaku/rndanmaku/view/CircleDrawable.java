@@ -46,7 +46,7 @@ public class CircleDrawable extends Drawable {
     }
 
     private void setBitmapHeart(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_liked);
         if (bitmap != null) {
             Matrix matrix = new Matrix();
             matrix.postScale(0.8f, 0.8f);

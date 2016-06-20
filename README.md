@@ -38,3 +38,11 @@ Modify getPackages method
 
 
 ##Usage
+
+```
+import Danmaku from 'react-native-danmaku'
+```
+
+```
+<Danmaku style={}></Danmaku>
+```

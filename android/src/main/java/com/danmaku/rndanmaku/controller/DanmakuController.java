@@ -1,11 +1,11 @@
-package com.danmaku.rndanmaku.danmu;
+package com.danmaku.rndanmaku.controller;
 
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.text.*;
 import android.util.Log;
-import com.danmaku.rndanmaku.model.Danmu;
+import com.danmaku.rndanmaku.model.Danmaku;
 import com.danmaku.rndanmaku.utils.DpOrSp2PxUtil;
 import com.danmaku.rndanmaku.view.CenteredImageSpan;
 import com.danmaku.rndanmaku.view.CircleDrawable;
@@ -24,37 +24,37 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by feiyang on 16/3/2.
+ * Created by mygu on 16/6/20.
  */
-public class DanmuControl {
+public class DanmakuController {
 
-    private static final String TAG = "DanmuControl";
+    private static final String TAG = "DanmakuController";
 
     //弹幕显示的时间(如果是list的话，会 * i)，记得加上mDanmakuView.getCurrentTime()
     private static final long ADD_DANMU_TIME = 2000;
 
-    private static final int PINK_COLOR   = 0xffff5a93;//粉红 楼主
+    private static final int PINK_COLOR = 0xffff5a93;//粉红 楼主
     private static final int ORANGE_COLOR = 0xffff815a;//橙色 我
-    private static final int BLACK_COLOR  = 0xb2000000;//黑色 普通
+    private static final int BLACK_COLOR = 0xb2000000;//黑色 普通
 
-    private int   BITMAP_WIDTH    = 18;//头像的大小
-    private int   BITMAP_HEIGHT   = 18;
+    private int BITMAP_WIDTH = 18;//头像的大小
+    private int BITMAP_HEIGHT = 18;
     private float DANMU_TEXT_SIZE = 10f;//弹幕字体的大小
 //    private int   EMOJI_SIZE      = 14;//emoji的大小
 
     //这两个用来控制两行弹幕之间的间距
-    private int DANMU_PADDING       = 8;
+    private int DANMU_PADDING = 8;
     private int DANMU_PADDING_INNER = 7;
-    private int DANMU_RADIUS        = 11;//圆角半径
+    private int DANMU_RADIUS = 11;//圆角半径
 
     private final int mGoodUserId = 1;
-    private final int mMyUserId   = 2;
+    private final int mMyUserId = 2;
 
-    private Context        mContext;
+    private Context mContext;
     private IDanmakuView mDanmakuView;
     private DanmakuContext mDanmakuContext;
 
-    public DanmuControl(Context context) {
+    public DanmakuController(Context context) {
         this.mContext = context;
         setSize(context);
         initDanmuConfig();
@@ -79,7 +79,7 @@ public class DanmuControl {
     private void initDanmuConfig() {
         // 设置最大显示行数
         HashMap<Integer, Integer> maxLinesPair = new HashMap<Integer, Integer>();
-        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 2); // 滚动弹幕最大显示2行
+        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
         // 设置是否禁止重叠
         HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
         overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
@@ -223,38 +223,42 @@ public class DanmuControl {
         }
     }
 
-    public void addDanmuList(final List<Danmu> danmuLists) {
+    public void addDanmuList(final List<Danmaku> danmakuLists) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < danmuLists.size(); i++) {
-                    addDanmu(danmuLists.get(i), i);
+                for (int i = 0; i < danmakuLists.size(); i++) {
+                    addDanmu(danmakuLists.get(i), i);
                 }
             }
         }).start();
     }
 
-    public void addDanmu(Danmu danmu, int i) {
+    public void addDanmu(Danmaku danmu, int i) {
         BaseDanmaku danmaku = mDanmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
 
-        danmaku.userId = danmu.userId;
-        danmaku.isGuest = danmu.type.equals("Like");//isGuest此处用来判断是赞还是评论
+        if (danmaku != null) {
+            danmaku.userId = danmu.userId;
+            danmaku.isGuest = danmu.type.equals("Like");//isGuest此处用来判断是赞还是评论
 
-        SpannableStringBuilder spannable;
-        Bitmap bitmap = getDefaultBitmap(danmu.avatarUrl);
-        CircleDrawable circleDrawable = new CircleDrawable(mContext, bitmap, danmaku.isGuest);
-        circleDrawable.setBounds(0, 0, BITMAP_WIDTH, BITMAP_HEIGHT);
-        spannable = createSpannable(circleDrawable, danmu.content);
-        danmaku.text = spannable;
+            SpannableStringBuilder spannable;
+            Bitmap bitmap = getDefaultBitmap(danmu.avatarUrl);
+            CircleDrawable circleDrawable = new CircleDrawable(mContext, bitmap, danmaku.isGuest);
+            circleDrawable.setBounds(0, 0, BITMAP_WIDTH, BITMAP_HEIGHT);
+            spannable = createSpannable(circleDrawable, danmu.content);
+            danmaku.text = spannable;
 
-        danmaku.padding = DANMU_PADDING;
-        danmaku.priority = 0;  // 1:一定会显示, 一般用于本机发送的弹幕,但会导致行数的限制失效
-        danmaku.isLive = false;
-        danmaku.time = mDanmakuView.getCurrentTime() + (i * ADD_DANMU_TIME);
-        danmaku.textSize = DANMU_TEXT_SIZE/* * (mDanmakuContext.getDisplayer().getDensity() - 0.6f)*/;
-        danmaku.textColor = Color.WHITE;
-        danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
-        mDanmakuView.addDanmaku(danmaku);
+            danmaku.padding = DANMU_PADDING;
+            danmaku.priority = 0;  // 1:一定会显示, 一般用于本机发送的弹幕,但会导致行数的限制失效
+            danmaku.isLive = false;
+            danmaku.time = mDanmakuView.getCurrentTime() + (i * ADD_DANMU_TIME);
+            danmaku.textSize = DANMU_TEXT_SIZE/* * (mDanmakuContext.getDisplayer().getDensity() - 0.6f)*/;
+            danmaku.textColor = Color.WHITE;
+            danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
+            mDanmakuView.addDanmaku(danmaku);
+        }
+
+
     }
 
     private Bitmap getDefaultBitmap(int drawableId) {
